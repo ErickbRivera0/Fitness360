@@ -1,0 +1,249 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  background-color: #000000;
+  padding: 40px 0 50px 0; /* Más espacio arriba */
+  border-bottom: 2px solid #007bff;
+  margin-bottom: 15x;    /* Separa el header del contenido */
+}
+
+nav {
+  float: right;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-left: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Hero Section */
+.hero {
+ 
+  min-height: 60vh;
+  background: linear-gradient(to right, #000000, #007bff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 0 60px 0;    /* Ajusta el padding si lo deseas */
+  box-sizing: border-box;
+}
+
+.hero .container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(0,0,0,0.3);
+  padding: 40px 30px 30px 40px;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+  margin-bottom: 18px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 32px;
+  color: #e0e0e0;
+}
+
+.btn {
+  background-color: #007bff;
+  color: white;
+  padding: 14px 32px;
+  text-decoration: none;
+  border-radius: 7px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background: #005bb5;
+}
+
+/* Features */
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0;
+  background-color: #1c1c1c;
+}
+
+.feature {
+  text-align: center;
+  width: 30%;
+}
+
+.feature h3 {
+  color: #007bff;
+}
+
+/* Footer */
+footer {
+  background-color: #000000;
+  padding: 110px 0;
+  text-align: center;
+  border-top: 1px solid #007bff;
+  .features-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+}
+.feature {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 250px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.plan-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Tabla de planes con líneas de contorno modernas */
+.features-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  color: #222;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  margin: 40px 0;
+  font-size: 1.08em;
+  border: 2px solid #007bff;
+}
+
+.features-table th,
+.features-table td {
+  padding: 18px 12px;
+  text-align: center;
+  border-bottom: 1px solid #e0e7ef;
+  border-right: 1px solid #e0e7ef;
+}
+
+.features-table th:last-child,
+.features-table td:last-child {
+  border-right: none;
+}
+
+.features-table tr:last-child td {
+  border-bottom: none;
+}
+
+.features-table th {
+  background: #f7faff;
+  color: #007bff;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.selected-plan {
+  background: #e3f0ff !important;
+  box-shadow: 0 0 0 2px #007bff33;
+  border-radius: 8px;
+  color: #222;
+  font-weight: bold;
+}
+
+.check {
+  color: #27ae60;
+  font-size: 1.3em;
+}
+
+.cross {
+  color: #bbb;
+  font-size: 1.3em;
+}
+
+/* Botón inscribirse oculto por defecto */
+.btn-inscribirse {
+  display: none;
+  margin-top: 15px;
+  background: #007bff;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.btn-inscribirse:hover {
+  background: #005bb5;
+}
+
+/* Resalta la columna y muestra el botón al hacer hover */
+.features-table th.plan,
+.features-table td.plan-highlight {
+  transition: background 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.features-table th.plan:hover,
+.features-table td.plan-highlight:hover,
+.features-table th.plan:focus-within {
+  background: #e3f0ff;
+  box-shadow: 0 0 0 3px #007bff33;
+}
+
+.features-table th.plan:hover .btn-inscribirse,
+.features-table th.plan:focus-within .btn-inscribirse {
+  display: inline-block;
+}
+
+/* Resalta la columna seleccionada */
+.selected-plan {
+  background: #e3f0ff !important;
+  box-shadow: 0 0 0 2px #007bff33;
+  transition: background 0.2s, box-shadow 0.2s;
+  border-radius: 8px;
+  color: #222;
+  font-weight: bold;
+}
+
+/* Botón inscribirse */
+#btn-inscribirse:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

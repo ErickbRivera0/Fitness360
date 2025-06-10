@@ -1,19 +1,46 @@
 <?php
 require_once __DIR__ . '/../includes/conexion.php';
 
+$error = '';
+$success = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $telefono = $_POST['telefono'];
+    $nombre = trim($_POST['nombre']);
+    $email = trim($_POST['email']);
+    $password_raw = $_POST['password'];
+    $telefono = trim($_POST['telefono']);
     $fecha_registro = date('Y-m-d');
 
-    $stmt = $mysqli->prepare("INSERT INTO Miembros (NombreCompleto, CorreoElectronico, Password, NumeroTelefono, FechaRegistro) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $nombre, $email, $password, $telefono, $fecha_registro);
-    $stmt->execute();
-
-    echo "<p>Registro exitoso. <a href='index.php?page=login'>Inicia sesión aquí</a></p>";
-    exit;
+    // Validaciones básicas
+    if (strlen($nombre) < 3) {
+        $error = "El nombre debe tener al menos 3 caracteres.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Correo electrónico no válido.";
+    } elseif (strlen($password_raw) < 6) {
+        $error = "La contraseña debe tener al menos 6 caracteres.";
+    } elseif (!preg_match('/^[0-9\- ]{7,15}$/', $telefono)) {
+        $error = "El número de teléfono no es válido.";
+    } else {
+        // Verificar si el correo ya existe
+        $stmt = $mysqli->prepare("SELECT IDMiembro FROM Miembros WHERE CorreoElectronico=?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $error = "El correo electrónico ya está registrado.";
+        } else {
+            // Registrar usuario
+            $password = password_hash($password_raw, PASSWORD_DEFAULT);
+            $stmt = $mysqli->prepare("INSERT INTO Miembros (NombreCompleto, CorreoElectronico, Password, NumeroTelefono, FechaRegistro) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $nombre, $email, $password, $telefono, $fecha_registro);
+            if ($stmt->execute()) {
+                $success = "Registro exitoso. <a href='index.php?page=login'>Inicia sesión aquí</a>";
+            } else {
+                $error = "Error al registrar. Intenta nuevamente.";
+            }
+        }
+        $stmt->close();
+    }
 }
 ?>
 <style>
@@ -84,21 +111,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="registro-wrapper">
   <div class="registro-card">
     <h2>Registro de Usuario</h2>
-    <form class="registro-form" method="post">
+    <?php if (!empty($error)): ?>
+      <div class="login-error"><?= $error ?></div>
+    <?php elseif (!empty($success)): ?>
+      <div class="login-success"><?= $success ?></div>
+    <?php endif; ?>
+    <?php if (empty($success)): ?>
+    <form class="registro-form" method="post" autocomplete="off">
         <label class="registro-label" for="nombre">Nombre Completo</label>
-        <input class="registro-input" type="text" name="nombre" id="nombre" placeholder="Nombre completo" required>
+        <input class="registro-input" type="text" name="nombre" id="nombre" placeholder="Nombre completo" required value="<?= isset($nombre) ? htmlspecialchars($nombre) : '' ?>">
 
         <label class="registro-label" for="email">Correo electrónico</label>
-        <input class="registro-input" type="email" name="email" id="email" placeholder="Correo electrónico" required>
+        <input class="registro-input" type="email" name="email" id="email" placeholder="Correo electrónico" required value="<?= isset($email) ? htmlspecialchars($email) : '' ?>">
 
         <label class="registro-label" for="password">Contraseña</label>
-        <input class="registro-input" type="password" name="password" id="password" placeholder="Contraseña" required>
+        <input class="registro-input" type="password" name="password" id="password" placeholder="Contraseña (mínimo 6 caracteres)" required>
 
         <label class="registro-label" for="telefono">Número de Celular</label>
-        <input class="registro-input" type="tel" name="telefono" id="telefono" placeholder="Ej: 9123-4567" required>
+        <input class="registro-input" type="tel" name="telefono" id="telefono" placeholder="Ej: 9123-4567" required value="<?= isset($telefono) ? htmlspecialchars($telefono) : '' ?>">
 
         <button class="registro-btn" type="submit">Registrarse</button>
     </form>
     <p style="margin-top:18px;">¿Ya tienes cuenta? <a href="index.php?page=login">Inicia sesión aquí</a></p>
+    <?php endif; ?>
   </div>
 </div>

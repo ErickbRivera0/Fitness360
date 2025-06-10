@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/conexion.php';
+
 ?>
 <style>
 .miembros-table {
@@ -23,6 +24,7 @@ require_once __DIR__ . '/../includes/conexion.php';
 }
 </style>
 
+<?php if (isset($_SESSION['Rol']) && $_SESSION['Rol'] === 'admin'): ?>
 <h2>Miembros</h2>
 <table class="miembros-table">
     <thead>
@@ -45,3 +47,6 @@ require_once __DIR__ . '/../includes/conexion.php';
         ?>
     </tbody>
 </table>
+<?php else: ?>
+    <p style="color:#c00; font-weight:bold; text-align:center;">No tienes permisos para ver esta sección.</p>
+<?php endif; ?>

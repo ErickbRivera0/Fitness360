@@ -24,3 +24,22 @@ while ($row = $result->fetch_assoc()) {
     echo "<option value='{$row['IDClase']}'>{$row['NombreClase']} - {$row['Horario']}</option>";
 }
 echo "</select><button type='submit'>Reservar</button></form>";
+
+// Mostrar lista de reservas del usuario actual
+$idMiembro = $_SESSION['IDMiembro'];
+$reservas = $mysqli->query("SELECT R.FechaHoraReserva, C.NombreClase, C.Horario 
+                            FROM Reserva R 
+                            JOIN Clases C ON R.IDClase = C.IDClase 
+                            WHERE R.IDMiembro = $idMiembro 
+                            ORDER BY R.FechaHoraReserva DESC");
+
+echo "<h3>Mis Reservas</h3>";
+if ($reservas->num_rows > 0) {
+    echo "<ul>";
+    while ($res = $reservas->fetch_assoc()) {
+        echo "<li>{$res['NombreClase']} ({$res['Horario']}) - Reservado el {$res['FechaHoraReserva']}</li>";
+    }
+    echo "</ul>";
+} else {
+    echo "<p>No tienes reservas.</p>";
+}

@@ -21,9 +21,11 @@ if (isset($_SESSION['IDMiembro'])) {
 <body>
   <header>
     <div class="container">
-      <h1>
-        <img src="img/gym.webp" alt="Fitness360" style="height:60px;">
+      <!-- <h1>
+        <img src="img/gym.webp" alt="Fitness360" style="height:90px;">
       </h1>
+      -->
+      <h1><a href="index.php?page=home" style="text-decoration:none; color:#000;">Fitness360</h1>
       <nav>
         <ul>
           <li><a href="index.php?page=home">Inicio</a></li>

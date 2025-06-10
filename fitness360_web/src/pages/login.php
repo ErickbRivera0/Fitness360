@@ -6,6 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
+    // Guardar correo en cookie si el usuario selecciona "Recordar credenciales"
+    if (isset($_POST['remember'])) {
+        setcookie('remember_email', $email, time() + (86400 * 30), "/"); // 30 días
+    } else {
+        setcookie('remember_email', '', time() - 3600, "/"); // Borra la cookie si no está seleccionado
+    }
+
     $stmt = $mysqli->prepare("SELECT IDMiembro, Password, Rol FROM Miembros WHERE CorreoElectronico=?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -165,7 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php endif; ?>
       <form class="login-form" method="post">
         <label class="login-label" for="email">Correo electrónico</label>
-        <input class="login-input" type="email" name="email" id="email" placeholder="Ingresa tu correo" required>
+        <input class="login-input" type="email" name="email" id="email" placeholder="Ingresa tu correo" required
+            value="<?php if (isset($_COOKIE['remember_email'])) echo htmlspecialchars($_COOKIE['remember_email']); ?>">
 
         <div class="login-links">
           <label class="login-label" for="password" style="margin-bottom:0;">Contraseña</label>
@@ -174,7 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input class="login-input" type="password" name="password" id="password" placeholder="Contraseña" required>
 
         <div class="login-remember">
-          <input type="checkbox" id="remember" name="remember">
+          <input type="checkbox" id="remember" name="remember"
+            <?php if (isset($_COOKIE['remember_email'])) echo 'checked'; ?>>
           <label for="remember" style="margin-bottom:0; font-weight:normal;">Recordar credenciales</label>
         </div>
         <button class="login-btn" type="submit">Acceder</button>

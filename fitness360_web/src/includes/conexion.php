@@ -1,8 +1,8 @@
 <?php
-$host = 'mysql';
-$db   = 'fitness';
+$host = 'switchback.proxy.rlwy.net:16032';
+$db   = 'fitness360';
 $user = 'root';
-$pass = 'rootpassword';
+$pass = 'JWjKAeEeGIkWRYzAdOmEhPqkFnUoKsKn';
 $charset = 'utf8mb4';
 
 // Crear conexión mysqli
